@@ -5,7 +5,7 @@ import "./style.css";
 async function main() {
   await init(wasmUrl);
   const game = new FourWinning();
-  const board = game.generate_game_board([10, 163], "m");
+  const board = game.generate_game_board(10, 276, "meters");
   console.log(board);
   return board;
 }
