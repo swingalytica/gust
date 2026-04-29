@@ -14,12 +14,22 @@ export interface Player {
     color: string;
     data: string[];
 }
+
+export interface PlayerUpdate {
+    pos?: number;
+    name?: string;
+    color?: string;
+    data?: string[];
+}
 "#;
 
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(typescript_type = "Player")]
     pub type PlayerJs;
+
+    #[wasm_bindgen(typescript_type = "PlayerUpdate")]
+    pub type PlayerUpdateJs;
 }
 
 #[derive(Deserialize, Serialize)]
@@ -29,6 +39,14 @@ pub struct Player {
     pub name: String,
     pub color: String,
     pub data: Vec<String>,
+}
+
+#[derive(Deserialize)]
+pub struct PlayerUpdate {
+    pub pos: Option<i32>,
+    pub name: Option<String>,
+    pub color: Option<String>,
+    pub data: Option<Vec<String>>,
 }
 
 #[wasm_bindgen]
@@ -56,6 +74,20 @@ impl FourWinning {
         let player: Player = serde_wasm_bindgen::from_value(player.into())
             .map_err(|e| JsValue::from_str(&e.to_string()))?;
         self.players.push(player);
+        Ok(())
+    }
+
+    pub fn update_player(&mut self, id: String, update: PlayerUpdateJs) -> Result<(), JsValue> {
+        let update: PlayerUpdate = serde_wasm_bindgen::from_value(update.into())
+            .map_err(|e| JsValue::from_str(&e.to_string()))?;
+    
+        if let Some(p) = self.players.iter_mut().find(|p| p.id == id) {
+            if let Some(pos) = update.pos { p.pos = pos; }
+            if let Some(name) = update.name { p.name = name; }
+            if let Some(color) = update.color { p.color = color; }
+            if let Some(data) = update.data { p.data = data; }
+        }
+
         Ok(())
     }
 

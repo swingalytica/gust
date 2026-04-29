@@ -5,9 +5,11 @@ import "./style.css";
 async function main() {
   await init(wasmUrl);
   const game = new FourWinning();
-  game.add_player({ id: "1", pos: 0, name: "Player 1", color: "red", data: [] });
+  game.add_player({ id: "1", pos: 0, name: "Player 1", color: "red", data: ["a"] });
   game.add_player({ id: "2", pos: 0, name: "Player 2", color: "yellow", data: [] });
+  console.log(game.get_players());
   const board = game.generate_game_board(10, 276, "meters");
+  game.update_player("1", { name: "Player 1 Updated", color: "blue" });
   console.log(game.get_players());
   return board;
 }
