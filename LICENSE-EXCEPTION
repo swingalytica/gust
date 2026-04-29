@@ -1,0 +1,21 @@
+# License Exception
+
+Copyright (c) 2026 RealGolf.Games UG (haftungsbeschränkt)
+
+As the sole copyright holder of Gust, RealGolf.Games UG (haftungsbeschränkt)
+is exempt from the AGPL-3.0 copyleft requirements and may use Gust in
+proprietary and commercial products without restriction.
+
+When we use Gust in our own products, the project or relevant parts are excluded from the
+AGPL-3.0 license, and we are not required to release the source code of those products
+under the AGPL-3.0 license.
+
+We will include the following notice in our products that use Gust:
+
+```txt
+© 2026 RealGolf.Games UG (haftungsbeschränkt) and Contributers.
+```
+
+All other parties must comply with the terms of the AGPL-3.0 license.
+
+For commercial licensing contact <info@swingalytica.com>.
