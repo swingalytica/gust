@@ -29,5 +29,3 @@ game.add_shot(148, 2);
 ## License
 
 AGPL-3.0 — see [LICENSE](LICENSE). For commercial licensing contact <info@swingalytica.com>.
-
-> .
