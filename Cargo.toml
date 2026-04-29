@@ -5,6 +5,10 @@ edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]
+name = "gust"
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = true
 
 [dependencies]
 wasm-bindgen = "0.2"
