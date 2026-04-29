@@ -5,15 +5,34 @@ import "./style.css";
 async function main() {
   await init(wasmUrl);
   const game = new FourWinning();
-  const board = game.generate_game_board([0, 100], "m");
-
+  const board = game.generate_game_board([10, 163], "m");
+  console.log(board);
   return board;
 }
 
-await main();
+const board = await main();
 
+// Generate a table to display the game board
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <h1>Gust Demo</h1>
 
-  <pre>${JSON.stringify(await main(), null, 2)}</pre>
+  <table>
+    <tbody>
+      ${board
+        .map(
+          (row) => `
+        <tr>
+          ${row
+            .map(
+              (cell) => `
+            <td>${cell.text}</td>
+          `,
+            )
+            .join("")}
+        </tr>
+      `,
+        )
+        .join("")}
+    </tbody>
+  </table>
 `;

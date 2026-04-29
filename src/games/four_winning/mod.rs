@@ -16,17 +16,19 @@ pub struct GameBoardCell {
 fn generate_game_board(range: [i32; 2], measurement_unit: String) -> Vec<Vec<GameBoardCell>> {
     let mut board: Vec<Vec<GameBoardCell>> = Vec::new();
     let [min, max] = range;
-    let distance_cells: i32 = FOUR_WINNING_DISTANCE_ROWS * FOUR_WINNING_DISTANCE_COLS;
+
+    let distance_cells: i32 = FOUR_WINNING_DISTANCE_ROWS * FOUR_WINNING_DISTANCE_COLS; // Distance cells: 8 rows * 5 cols = 40 cells
     let range_size: i32 = max - min;
     let increment_per_cell: i32 = range_size / distance_cells;
+    let total_cols: i32 = FOUR_WINNING_DISTANCE_COLS + FOUR_WINNING_LATERAL_DEVIATION_COLS;
 
     let mut cell_index: i32 = 0;
 
     for row in 0..FOUR_WINNING_DISTANCE_ROWS {
         let mut current_row: Vec<GameBoardCell> = Vec::new();
 
-        for col in 0..FOUR_WINNING_DISTANCE_COLS {
-            if col == 0 || col == 8 {
+        for col in 0..total_cols {
+            if col == 0 || col == total_cols - 1 {
                 // Leteral deviation cells
                 let deviation_value: i32 = (row / FOUR_WINNING_LATERAL_DEVIATION_COLS) + 1;
 
