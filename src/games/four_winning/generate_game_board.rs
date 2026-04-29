@@ -6,6 +6,8 @@ static FOUR_WINNING_LATERAL_DEVIATION_COLS: i32 = 2;
 
 #[derive(Serialize, Deserialize)]
 pub struct GameBoardCell {
+    pub col: String,
+    pub row: i32,
     pub text: String,
     pub color: String,
     pub player_id: String
@@ -29,11 +31,24 @@ pub fn generate_game_board(min: i32, max: i32, measurement_unit: String) -> Vec<
                 // Leteral deviation cells
                 let deviation_value: i32 = (row / FOUR_WINNING_LATERAL_DEVIATION_COLS) + 1;
 
-                current_row.push(GameBoardCell { text: format!("{} {}", deviation_value, measurement_unit), color: String::from("transparent"), player_id: String::new() });
+                current_row.push(GameBoardCell {
+                    col: String::new(), 
+                    row: 0, 
+                    text: format!("{} {}", deviation_value, measurement_unit), 
+                    color: String::from("transparent"), 
+                    player_id: String::new() });
             } else {
                 let a: i32 = f32::round(min as f32 + cell_index as f32 * increment_per_cell) as i32;
                 let b: i32 = f32::round(min as f32 + (cell_index + 1) as f32 * increment_per_cell) as i32;
-                current_row.push(GameBoardCell { text: format!("{}-{}", a, b), color: String::from("transparent"), player_id: String::from("") });
+
+                let col_id: char = (b'a' + col as u8 - 1) as char;
+                let row_id: i32 = row + 1;
+                current_row.push(GameBoardCell { 
+                    col: col_id.to_string(), 
+                    row: row_id, 
+                    text: format!("{}-{}", a, b), 
+                    color: String::from("transparent"), 
+                    player_id: String::from("") });
                 cell_index += 1;
             }
         }
