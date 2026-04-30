@@ -131,4 +131,35 @@ impl FourWinning {
 
         Ok(JsValue::null())
     }
+
+    #[wasm_bindgen]
+    pub fn handle_click(&mut self, coord: String) -> Result<JsValue, JsValue> {
+        let current_player_id: String = self.current_player_id.clone();
+    
+        let current_player_color: String = self.players.iter()
+            .find(|p: &&Player| p.id == current_player_id)
+            .ok_or_else(|| JsValue::from_str("Current player not found"))?
+            .color.clone();
+    
+        let mut found: bool = false;
+        for row in self.board.iter_mut() {
+            for cell in row.iter_mut() {
+                let cell_coord = format!("{}{}", cell.col, cell.row);
+                if cell_coord == coord {
+                    found = true;
+                    if cell.player_id.is_empty() {
+                        cell.player_id = current_player_id.clone();
+                        cell.color = current_player_color.clone();
+                        if let Some(player) = self.players.iter_mut().find(|p: &&mut Player| p.id == current_player_id) {
+                            player.data.push(cell.text.clone());
+                        }
+                    }
+                    break;
+                }
+            }
+            if found { break; }
+        }
+    
+        Ok(JsValue::null())
+    }
 }
