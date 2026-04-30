@@ -4,7 +4,7 @@ static FOUR_WINNING_DISTANCE_ROWS: i32 = 8;
 static FOUR_WINNING_DISTANCE_COLS: i32 = 7;
 static FOUR_WINNING_LATERAL_DEVIATION_COLS: i32 = 2;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct GameBoardCell {
     pub col: String,
     pub row: i32,
