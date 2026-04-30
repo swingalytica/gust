@@ -114,7 +114,16 @@ impl FourWinning {
     }
 
     pub fn click_cell(&mut self, coord: String) -> Result<JsValue, JsValue> {
-        print!("Cell clicked: {}", coord);
+        let cell: &generate_game_board::GameBoardCell = self.board.iter()
+            .flatten()
+            .find(|c: &&generate_game_board::GameBoardCell| c.col == coord)
+            .ok_or_else(|| JsValue::from_str("Cell not found"))?;
+
+        if self.game_ended || !cell.player_id.is_empty() || cell.text.contains(&self.unit) {
+            return Ok(JsValue::null());
+        }
+
+
         Ok(JsValue::null())
     }
 }
