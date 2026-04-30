@@ -1,6 +1,10 @@
 [package]
 name = "gust"
 version = "0.1.0"
+description = "Golf Games in Rust is a collection of golf games implemented in Rust, designed to be compiled to WebAssembly and used in web applications. The library provides a set of tools and utilities for creating interactive golf game boards, handling game logic, and managing player interactions. It is intended to be a flexible and extensible framework for developers looking to create engaging golf-themed games on the web."
+repository = "https://github.com/swingalytica/gust"
+license = "AGPL-3.0"
+authors = ["Julian Hammer"]
 edition = "2024"
 
 [lib]
