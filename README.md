@@ -2,12 +2,7 @@
 
 Gust is a free Open Source golf games engine focused on Golf Training Engagement and Fun.
 
-## Games
-
-- **Exact** — Consistency and repeatability
-- **Precision** — Get as close to the target as possible
-- **4Winning** — Connect Four on distance zones
-- **Sinking Ships** — Battleship on the range
+**Gust is in early development. The API is not stable yet and may change without a major version bump.**
 
 ## Installation
 
@@ -15,17 +10,27 @@ Gust is a free Open Source golf games engine focused on Golf Training Engagement
 npm install @swingalytica/gust
 ```
 
+## Games
+
+- **4Winning** — Connect Four on distance zones
+- **Exact** — Consistency and repeatability _(coming soon)_
+- **Precision** — Get as close to the target as possible _(coming soon)_
+- **Sinking Ships** — Battleship on the range _(coming soon)_
+
 ## Usage
 
 ```typescript
-import init, { Precision } from "@swingalytica/gust";
+import init, { FourWinning } from "@swingalytica/gust";
 
-await init();
+await init({ module_or_path: wasmUrl });
 
-const game = new Precision(150, 0, 10);
-game.add_shot(148, 2);
+const game = new FourWinning();
+game.add_player({ id: "1", name: "Player 1", color: "#e74c3c", pos: 0, data: [] });
+game.generate_game_board(10, 276, "m");
+game.start(new Date().toISOString());
+game.click_cell("a1");
 ```
 
 ## License
 
-AGPL-3.0 — see [LICENSE](LICENSE). For commercial licensing contact <info@swingalytica.com>.
+AGPL-3.0 — see [LICENSE](LICENSE). Commercial licensing: <info@swingalytica.com>
