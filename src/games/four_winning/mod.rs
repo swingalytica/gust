@@ -86,6 +86,20 @@ impl FourWinning {
     }
 
     #[wasm_bindgen]
+    pub fn get_board(&self) -> Result<JsValue, JsValue> {
+        to_value(&self.board).map_err(|e: Error| JsValue::from_str(&e.to_string()))
+    }
+
+    #[wasm_bindgen]
+    pub fn get_winner_id(&self) -> Option<String> {
+        if self.game_ended {
+        Some(self.current_player_id.clone())
+    } else {
+        None
+    }
+    }
+
+    #[wasm_bindgen]
     pub fn add_player(&mut self, player: PlayerJs) -> Result<(), JsValue> {
         let player: Player = serde_wasm_bindgen::from_value(player.into())
             .map_err(|e: Error| JsValue::from_str(&e.to_string()))?;
@@ -124,7 +138,7 @@ impl FourWinning {
     pub fn click_cell(&mut self, coord: String) -> Result<JsValue, JsValue> {
         let cell: &GameBoardCell = self.board.iter()
             .flatten()
-            .find(|c: &&GameBoardCell| c.col == coord)
+            .find(|c: &&GameBoardCell| format!("{}{}", c.col, c.row) == coord)
             .ok_or_else(|| JsValue::from_str("Cell not found"))?;
 
         if self.game_ended || !cell.player_id.is_empty() || cell.text.contains(&self.unit) {
