@@ -8,3 +8,6 @@ dev:
 
 demo:
 	make build && cd demo && pnpm install && pnpm dev --open
+
+publish:
+	make build && wasm-pack publish --access public
