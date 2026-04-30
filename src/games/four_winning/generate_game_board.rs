@@ -1,8 +1,5 @@
 use serde::{Serialize, Deserialize};
-
-static FOUR_WINNING_DISTANCE_ROWS: i32 = 8;
-static FOUR_WINNING_DISTANCE_COLS: i32 = 7;
-static FOUR_WINNING_LATERAL_DEVIATION_COLS: i32 = 2;
+use super::consts;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct GameBoardCell {
@@ -16,20 +13,20 @@ pub struct GameBoardCell {
 pub fn generate_game_board(min: i32, max: i32, measurement_unit: String) -> Vec<Vec<GameBoardCell>> {
     let mut board: Vec<Vec<GameBoardCell>> = Vec::new();
 
-    let distance_cells: i32 = FOUR_WINNING_DISTANCE_ROWS * FOUR_WINNING_DISTANCE_COLS; // Distance cells: 8 rows * 5 cols = 40 cells
+    let distance_cells: i32 = consts::FOUR_WINNING_DISTANCE_ROWS * consts::FOUR_WINNING_DISTANCE_COLS; // Distance cells: 8 rows * 5 cols = 40 cells
     let range_size: i32 = max - min;
     let increment_per_cell: f32 = range_size as f32 / distance_cells as f32;
-    let total_cols: i32 = FOUR_WINNING_DISTANCE_COLS + FOUR_WINNING_LATERAL_DEVIATION_COLS;
+    let total_cols: i32 = consts::FOUR_WINNING_DISTANCE_COLS + consts::FOUR_WINNING_LATERAL_DEVIATION_COLS;
 
     let mut cell_index: i32 = 0;
 
-    for row in 0..FOUR_WINNING_DISTANCE_ROWS {
+    for row in 0..consts::FOUR_WINNING_DISTANCE_ROWS {
         let mut current_row: Vec<GameBoardCell> = Vec::new();
 
         for col in 0..total_cols {
             if col == 0 || col == total_cols - 1 {
                 // Leteral deviation cells
-                let deviation_value: i32 = (row / FOUR_WINNING_LATERAL_DEVIATION_COLS) + 1;
+                let deviation_value: i32 = (row / consts::FOUR_WINNING_LATERAL_DEVIATION_COLS) + 1;
 
                 current_row.push(GameBoardCell {
                     col: String::new(), 

@@ -1,4 +1,5 @@
 mod generate_game_board;
+mod consts;
 
 use serde::{Deserialize, Serialize};
 use serde_wasm_bindgen::to_value;
@@ -135,12 +136,12 @@ impl FourWinning {
     #[wasm_bindgen]
     pub fn handle_click(&mut self, coord: String) -> Result<JsValue, JsValue> {
         let current_player_id: String = self.current_player_id.clone();
-    
+
         let current_player_color: String = self.players.iter()
             .find(|p: &&Player| p.id == current_player_id)
             .ok_or_else(|| JsValue::from_str("Current player not found"))?
             .color.clone();
-    
+
         let mut found: bool = false;
         for row in self.board.iter_mut() {
             for cell in row.iter_mut() {
@@ -159,7 +160,7 @@ impl FourWinning {
             }
             if found { break; }
         }
-    
+
         Ok(JsValue::null())
     }
 }
