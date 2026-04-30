@@ -1,10 +1,12 @@
 mod generate_game_board;
+mod generate_win_combinations;
 mod consts;
 
 use serde::{Deserialize, Serialize};
 use serde_wasm_bindgen::to_value;
 use wasm_bindgen::prelude::*;
-use generate_game_board::generate_game_board;
+use generate_game_board::{generate_game_board, GameBoardCell};
+use generate_win_combinations::{generate_win_combinations, WinCombination};
 use serde_wasm_bindgen::Error;
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -54,7 +56,7 @@ pub struct PlayerUpdate {
 #[wasm_bindgen]
 pub struct FourWinning {
     players: Vec<Player>,
-    board: Vec<Vec<generate_game_board::GameBoardCell>>,
+    board: Vec<Vec<GameBoardCell>>,
     current_player_id: String,
     game_ended: bool,
     start_time: String,
@@ -78,7 +80,7 @@ impl FourWinning {
     #[wasm_bindgen]
     pub fn generate_game_board(&mut self, min: i32, max: i32, measurement_unit: String) -> Result<JsValue, JsValue> {
         self.unit = measurement_unit.clone();
-        let board: Vec<Vec<generate_game_board::GameBoardCell>> = generate_game_board(min, max, measurement_unit);
+        let board: Vec<Vec<GameBoardCell>> = generate_game_board(min, max, measurement_unit);
         self.board = board.clone();
         to_value(&board).map_err(|e: Error| JsValue::from_str(&e.to_string()))
     }
@@ -120,17 +122,16 @@ impl FourWinning {
     }
 
     pub fn click_cell(&mut self, coord: String) -> Result<JsValue, JsValue> {
-        let cell: &generate_game_board::GameBoardCell = self.board.iter()
+        let cell: &GameBoardCell = self.board.iter()
             .flatten()
-            .find(|c: &&generate_game_board::GameBoardCell| c.col == coord)
+            .find(|c: &&GameBoardCell| c.col == coord)
             .ok_or_else(|| JsValue::from_str("Cell not found"))?;
 
         if self.game_ended || !cell.player_id.is_empty() || cell.text.contains(&self.unit) {
             return Ok(JsValue::null());
         }
 
-
-        Ok(JsValue::null())
+        self.handle_click(coord)
     }
 
     #[wasm_bindgen]
@@ -161,6 +162,34 @@ impl FourWinning {
             if found { break; }
         }
 
+        let won: bool = self.check_win();
+
+        if !won {
+            self.current_player_id = self.players.iter()
+                .find(|p: &&Player| p.id != current_player_id)
+                .map(|p: &Player| p.id.clone())
+                .unwrap_or_else(|| String::new());
+        } else {
+            self.game_ended = true;
+        }
+
         Ok(JsValue::null())
+    }
+
+    pub fn check_win(&self) -> bool {
+        let win_combinations: Vec<WinCombination> = generate_win_combinations();
+
+        return win_combinations.iter().any(|combination: &WinCombination| {
+            let player_ids: Vec<String> = combination.position.iter()
+                .filter_map(|(col, row)| {
+                    self.board.iter()
+                        .flatten()
+                        .find(|c: &&GameBoardCell| c.col == *col && c.row == *row)
+                        .map(|cell: &GameBoardCell| cell.player_id.clone())
+                })
+                .collect();
+
+            player_ids.len() == 4 && player_ids.iter().all(|id: &String| !id.is_empty() && id == &self.current_player_id)
+        })
     }
 }
