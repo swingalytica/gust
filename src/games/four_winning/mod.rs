@@ -86,7 +86,6 @@ impl FourWinning {
     pub fn add_player(&mut self, player: PlayerJs) -> Result<(), JsValue> {
         let player: Player = serde_wasm_bindgen::from_value(player.into())
             .map_err(|e: Error| JsValue::from_str(&e.to_string()))?;
-        self.current_player_id = player.id.clone();
         self.players.push(player);
         Ok(())
     }
@@ -111,6 +110,12 @@ impl FourWinning {
 
     pub fn get_players(&self) -> Result<JsValue, JsValue> {
         to_value(&self.players).map_err(|e: Error| JsValue::from_str(&e.to_string()))
+    }
+
+    pub fn start(&mut self, start_time: String) {
+        self.start_time = start_time;
+        self.current_player_id = self.players[0].id.clone();
+        self.game_ended = false;
     }
 
     pub fn click_cell(&mut self, coord: String) -> Result<JsValue, JsValue> {
