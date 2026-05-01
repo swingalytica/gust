@@ -95,4 +95,9 @@ impl Exact {
 
         Ok(())
     }
+
+    #[wasm_bindgen]
+    pub fn remove_player(&mut self, id: String) {
+        self.players.retain(|p: &Player| p.id != id);
+    }
 }
