@@ -2,5 +2,17 @@ pub const DOUBLES: [i32; 9] = [11, 22, 33, 44, 55, 66, 77, 88, 99];
 pub const TENS: [i32; 9] = [10, 20, 30, 40, 50, 60, 70, 80, 90];
 pub const BULLSEYE: [i32; 1] = [100];
 pub const PENALTIES: [&str; 2] = ["<5", ">100"];
-pub const SPECIAL_NUMBERS: [i32; 19] = [&DOUBLES, &TENS, &BULLSEYE].concat();
-pub const REGULAR_NUMBERS: [i32; 90] = (1..=100).filter(|n| !SPECIAL_NUMBERS.contains(n)).collect::<Vec<i32>>().try_into().unwrap();
+
+// Numbers from 1 to 100, excluding SPECIAL_NUMBERS
+pub const REGULAR_NUMBERS: [i32; 81] = [
+	1, 2, 3, 4, 5, 6, 7, 8, 9,
+	12, 13, 14, 15, 16, 17, 18, 19,
+	21, 23, 24, 25, 26, 27, 28, 29,
+	31, 32, 34, 35, 36, 37, 38, 39,
+	41, 42, 43, 45, 46, 47, 48, 49,
+	51, 52, 53, 54, 56, 57, 58, 59,
+	61, 62, 63, 64, 65, 67, 68, 69,
+	71, 72, 73, 74, 75, 76, 78, 79,
+	81, 82, 83, 84, 85, 86, 87, 89,
+	91, 92, 93, 94, 95, 96, 97, 98
+];
