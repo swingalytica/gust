@@ -100,4 +100,9 @@ impl Exact {
     pub fn remove_player(&mut self, id: String) {
         self.players.retain(|p: &Player| p.id != id);
     }
+
+    #[wasm_bindgen]
+    pub fn get_players(&self) -> Result<JsValue, JsValue> {
+        to_value(&self.players).map_err(|e: Error| JsValue::from_str(&e.to_string()))
+    }
 }
